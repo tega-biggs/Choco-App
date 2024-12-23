@@ -2,9 +2,11 @@ import { db } from "@/lib/db/db";
 import { products } from "@/lib/db/schema";
 import { productSchema } from "@/lib/validators/productSchema";
 import { writeFile } from "node:fs/promises";
+import { desc } from "drizzle-orm"
 import path from "node:path";
 
 export async function POST(request: Request) {
+    // check user access
     const data = await request.formData();
 
     let validatedData;
@@ -44,4 +46,20 @@ export async function POST(request: Request) {
     }
 
     return Response.json({ message: 'Product created successfully' }, { status: 201 });
+}
+
+
+
+export async function GET() {
+    try {
+    const allProducts = await db
+    .select()
+    .from(products)
+    .orderBy(desc(products.id));
+    return Response.json(allProducts, { status: 200 });
+
+    } catch(err) {
+        console.error(err);
+        return Response.json({message: "Failed to fetch products"}, {status: 500});
+    }
 }
