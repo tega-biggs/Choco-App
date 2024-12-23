@@ -11,3 +11,5 @@ CREATE TABLE IF NOT EXISTS "users" (
 	"created_at" timestamp DEFAULT CURRENT_TIMESTAMP,
 	CONSTRAINT "users_email_unique" UNIQUE("email")
 );
+
+
